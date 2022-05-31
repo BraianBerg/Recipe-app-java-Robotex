@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,9 +25,11 @@ import com.example.recipe_app.Database.DbMethods;
 import com.example.recipe_app.Listeners.RandomRecipeResponseListener;
 import com.example.recipe_app.Listeners.RecipeClickListener;
 import com.example.recipe_app.Models.RandomRecipeApiResponse;
+import com.example.recipe_app.Worker.PeriodicWorkerClass;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -40,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //periodic work
+        SetupPeriodicWork();
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...");
 
@@ -50,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 tags.clear();
                 tags.add(query);
-                //manager.getRandomRecipes(randomRecipeResponseListener, tags);
-                // vajab fixmimist
+
                 dbMethods.GetResByDishType(firestoreCallbackfromDb, tags, getApplicationContext());
                 dialog.show();
                 Log.e("custom", "onQueryTextSubmit: ");
@@ -76,28 +82,23 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(spinnerSelectedListener);
 
         manager = new RequestManager(this);
-//       manager.getRandomRecipes(randomRecipeResponseListener);
-//        dialog.show();
 
     }
+    private void SetupPeriodicWork(){
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
 
-    private final RandomRecipeResponseListener randomRecipeResponseListener = new RandomRecipeResponseListener() {
-        @Override
-        public void didFetch(RandomRecipeApiResponse response, String message) {
-            Log.e("custom", "didFetch:" );
-            dialog.dismiss();
-            recyclerView = findViewById(R.id.recycler_random);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
-            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes, recipeClickListener);
-            recyclerView.setAdapter(randomRecipeAdapter);
-        }
+        PeriodicWorkRequest periodicWorkRequest =
+                new PeriodicWorkRequest.Builder(PeriodicWorkerClass.class, 1, TimeUnit.DAYS)
+                        .setConstraints(constraints)
 
-        @Override
-        public void didError(String message) {
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-        }
-    };
+                        .build();
+
+        WorkManager workManager =  WorkManager.getInstance(this);
+        workManager.enqueue(periodicWorkRequest);
+    }
+
 
     private final FirestoreCallback firestoreCallbackfromDb = new FirestoreCallback() {
         @Override
@@ -126,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("custom", "onItemSelected: õ" );
             tags.clear();
             tags.add(adapterView.getSelectedItem().toString());
-            //manager.getRandomRecipes(randomRecipeResponseListener, tags);
             dbMethods.GetResByDishType(firestoreCallbackfromDb, tags, getApplicationContext());
             dialog.show();
         }
@@ -137,12 +137,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
-        @Override
-        public void onRecipeClicked(String id) {
-//            Toast.makeText(MainActivity.this, id, Toast.LENGTH_SHORT).show();
-       /*     startActivity(new Intent(MainActivity.this, RecipeDetailsActivity.class)
-                    .putExtra("id", id).putExtra("boolSimilar", "false"));*/
-        }
-    };
+    private final RecipeClickListener recipeClickListener = id -> startActivity(new Intent(MainActivity.this, RecipeDetailsActivity.class)
+            .putExtra("id", id).putExtra("boolSimilar", "false"));
 }
