@@ -1,7 +1,10 @@
 package com.example.recipe_app.Database;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -73,13 +76,13 @@ public class DbMethods {
                     firestoreCallback.GotData(response, message);
                     Log.e("response", "didFetch: " +  response.recipes.size() );
                     // call db write on second thread
-                    BackRoundDbRandomResWrite ss = new BackRoundDbRandomResWrite(response.recipes);
+                    BackRoundDbRandomResWrite ss = new BackRoundDbRandomResWrite(response.recipes, context);
                     ss.run();
 
                 }else {
                     // call worker thread db write
                     Log.e("BackRoundDbRandomResWri", "didFetch: dblist size " + dbResList.size() );
-                    BackRoundDbRandomResWrite ss = new BackRoundDbRandomResWrite(response.recipes);
+                    BackRoundDbRandomResWrite ss = new BackRoundDbRandomResWrite(response.recipes,context);
                     ss.run();
                     // if db has some data
                     response.recipes.addAll(dbResList);
@@ -101,14 +104,23 @@ public class DbMethods {
         private final CollectionReference recipes = db.collection("recipes");
         private ArrayList<Recipe> reslist;
         private DocumentReference resDocRef;
+        private Context context;
+        Handler handler = new Handler(Looper.getMainLooper());
         
-        public BackRoundDbRandomResWrite(ArrayList<Recipe> reslist){
+        public BackRoundDbRandomResWrite(ArrayList<Recipe> reslist, Context context){
             this.reslist = reslist;
+            this.context = context;
         }
         
         @Override
         public void run() {
             Log.d(TAG, "run: triggered");
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, "Background thread is writing data to db", Toast.LENGTH_SHORT).show();
+                }
+            });
            WriteToDb(reslist);
         }
         

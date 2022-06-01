@@ -1,7 +1,10 @@
 package com.example.recipe_app.Database;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +25,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +64,14 @@ public class DbMethodsDetails {
             @Override
             public void didFetch(RecipeDetailsResponce response, String message) {
                 //save to db
+                response.summary = Html2Text(response.instructions);
+                response.instructions = Html2Text(response.instructions);
                 //callback
                 if (!response.analyzedInstructions.isEmpty()){
                     // kui on nalyzed instructions olemas
                     callback.GotDetails(response);
                     instructionsCallback.GotAnalyzedInstructions(AnalyzedToInstructions(response.analyzedInstructions));
-                    SaveDetailsToDb thread2 = new SaveDetailsToDb(response);
+                    SaveDetailsToDb thread2 = new SaveDetailsToDb(response, context);
                     thread2.start();
                 }else{
                     // kui pole instructioneid olemas
@@ -78,7 +85,7 @@ public class DbMethodsDetails {
                 if (checkIfResExists){
                     // kutsu kontroll
                     Log.d(TAG, "didFetch: kontroll passed");
-                    CheckIfResExistsAndWrite checkIfResExistsAndWrite = new CheckIfResExistsAndWrite(id, response);
+                    CheckIfResExistsAndWrite checkIfResExistsAndWrite = new CheckIfResExistsAndWrite(id, response, context);
                     checkIfResExistsAndWrite.run();
                 }
 
@@ -91,20 +98,33 @@ public class DbMethodsDetails {
             }
         },id);
     }
+    private String Html2Text(String html){
+
+        return Jsoup.parse(html).text();
+    }
     private static class CheckIfResExistsAndWrite extends Thread{
         private final FirebaseFirestore db = FirebaseFirestore.getInstance();
         private CollectionReference recipes = db.collection("recipes");
         private int id;
         private RecipeDetailsResponce responce;
+        private Context context;
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        public CheckIfResExistsAndWrite (int id, RecipeDetailsResponce responce){
+        public CheckIfResExistsAndWrite (int id, RecipeDetailsResponce responce, Context context){
             this.id = id;
             this.responce = responce;
+            this.context = context;
         }
 
         @Override
         public void run() {
             CheckIfResExists(responce, id);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, "Background thread is saving data", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         private void CheckIfResExists(RecipeDetailsResponce responce, int id){
@@ -177,15 +197,25 @@ public class DbMethodsDetails {
         private final FirebaseFirestore db = FirebaseFirestore.getInstance();
         private final CollectionReference details = db.collection("details");
         private final RecipeDetailsResponce detailsModel;
+        private Context context;
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        public SaveDetailsToDb(RecipeDetailsResponce detailsModel){
+
+        public SaveDetailsToDb(RecipeDetailsResponce detailsModel,Context context){
             this.detailsModel = detailsModel;
+            this.context = context;
         }
 
         @Override
         public void run() {
             //super.run();
             Log.d(TAG, "run: second thread write db");
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context,"Background thread is saving details to Db ", Toast.LENGTH_SHORT).show();
+                }
+            });
             SaveDetails(detailsModel);
         }
         private void SaveDetails(RecipeDetailsResponce detailsModel){
@@ -198,7 +228,7 @@ public class DbMethodsDetails {
             @Override
             public void didFetch(List<InstructionsResponse> response, String message) {
                 // call thread and save it to db
-                ChangeDocumentsInstructions changeDocumentsInstructions = new ChangeDocumentsInstructions(snapshot, response);
+                ChangeDocumentsInstructions changeDocumentsInstructions = new ChangeDocumentsInstructions(snapshot, response, context);
                 changeDocumentsInstructions.start();
                 callback.GotAnalyzedInstructions(response);
             }
@@ -218,17 +248,25 @@ public class DbMethodsDetails {
         private final CollectionReference details = db.collection("details");
         private final DocumentSnapshot snapshot;
         private final List<InstructionsResponse> list;
+        private Context context;
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        public ChangeDocumentsInstructions(DocumentSnapshot snapshot,List<InstructionsResponse> list){
+        public ChangeDocumentsInstructions(DocumentSnapshot snapshot,List<InstructionsResponse> list, Context context){
             this.snapshot = snapshot;
             this.list = list;
+            this.context = context;
         }
-
         @Override
         public void run() {
             ChangeDocumentInstructions(snapshot, list);
-        }
 
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, "Background thread is changing documents", Toast.LENGTH_SHORT ).show();
+                }
+            });
+        }
         private void ChangeDocumentInstructions(DocumentSnapshot snapshot, List<InstructionsResponse> list){
             DocumentReference docRef = details.document(snapshot.getId());
             docRef.update("analyzedInstructions", list)
@@ -246,7 +284,7 @@ public class DbMethodsDetails {
                 detailsResponse.analyzedInstructions = InstructionsToAnalyzed(response);
 
                 //call thread
-                SaveDetailsToDb saveDetailsToDb = new SaveDetailsToDb(detailsResponse);
+                SaveDetailsToDb saveDetailsToDb = new SaveDetailsToDb(detailsResponse, context);
                 saveDetailsToDb.start();
             }
 
