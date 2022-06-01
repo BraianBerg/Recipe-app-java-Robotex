@@ -17,7 +17,7 @@
     <color name="backgroundblue">#caeaed</color>
     <color name="appbackground">#242526</color>
     <color name="appmainboxes">#818589</color>
-    <color name="appsmallboxes">#dadada</color>
+    <color name="appsmallboxes">#ffffff</color>
     <color name="apptextcolor">#ffffff</color>
 
 </resources>

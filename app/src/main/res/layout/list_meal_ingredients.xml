@@ -18,7 +18,7 @@
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:textColor="@color/apptextcolor"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="16sp"
             android:padding="4dp"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/imageView_ingredients"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             android:layout_width="80dp"
             android:layout_height="50dp"/>
         <TextView
@@ -38,7 +38,7 @@
             android:scrollHorizontally="true"
             android:textSize="16sp"
             android:textAlignment="center"
-            android:textColor="@color/apptextcolor"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:padding="4dp"
             android:layout_width="match_parent"
