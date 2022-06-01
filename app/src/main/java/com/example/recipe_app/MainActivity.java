@@ -1,7 +1,9 @@
 package com.example.recipe_app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
@@ -11,11 +13,13 @@ import androidx.work.WorkManager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private DbMethods dbMethods = new DbMethods();
+    ImageButton imgButton;
     ProgressDialog dialog;
     RequestManager manager;
     RandomRecipeAdapter randomRecipeAdapter;
@@ -46,8 +51,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         //periodic work
         SetupPeriodicWork();
+
+        //set theme
+        SetTheme();
+
+
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...");
 
@@ -69,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+        imgButton = findViewById(R.id.SettingsButton);
         spinner = findViewById(R.id.spinner_tags);
         ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(
                 this,
@@ -83,20 +95,43 @@ public class MainActivity extends AppCompatActivity {
 
         manager = new RequestManager(this);
 
+        Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        imgButton.setOnClickListener(view -> startActivity(settingsIntent));
     }
+
+    private void SetTheme() {
+        // get from prefrences
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean theme = prefs.getBoolean("switch_preference_1", true);
+        if (theme){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
     private void SetupPeriodicWork(){
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
-
+        int delay = GetDataUpdateSettings();
         PeriodicWorkRequest periodicWorkRequest =
-                new PeriodicWorkRequest.Builder(PeriodicWorkerClass.class, 1, TimeUnit.DAYS)
+                new PeriodicWorkRequest.Builder(PeriodicWorkerClass.class, delay, TimeUnit.DAYS)
                         .setConstraints(constraints)
 
                         .build();
 
         WorkManager workManager =  WorkManager.getInstance(this);
         workManager.enqueue(periodicWorkRequest);
+    }
+
+    //get update, time offset
+    private int GetDataUpdateSettings(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        return Integer.parseInt(prefs.getString("drop_datadelay", "1"));
     }
 
 
