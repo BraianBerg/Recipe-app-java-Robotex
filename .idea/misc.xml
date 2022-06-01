@@ -3,6 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.165" />
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.165" />
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/drawable/ic_launcher_background.xml" value="0.165" />
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/drawable/ic_like.xml" value="0.165" />
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/drawable/ic_search.xml" value="0.165" />
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/drawable/ic_servings.xml" value="0.165" />
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/layout/activity_main.xml" value="0.1581196581196581" />
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/layout/settings_activity.xml" value="0.2259963768115942" />
+        <entry key="..\:/Users/braia/Desktop/1 june main/Recipe-app-java-Robotex/app/src/main/res/xml/root_preferences.xml" value="0.12360688956433637" />
         <entry key="..\:/Users/kcass/OneDrive/Desktop/MainRecipeApp/Recipe-app-java-Robotex/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1425" />
         <entry key="..\:/Users/kcass/OneDrive/Desktop/MainRecipeApp/Recipe-app-java-Robotex/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1425" />
         <entry key="..\:/Users/kcass/OneDrive/Desktop/MainRecipeApp/Recipe-app-java-Robotex/app/src/main/res/drawable/ic_like.xml" value="0.1425" />
