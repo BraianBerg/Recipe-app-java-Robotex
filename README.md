@@ -18,4 +18,4 @@
 
 
 # Main process Uml Scheme
-![alt text](https://github.com/BraianBerg/Recipe-app-java-Robotex/blob/master/img/283784156_1774248399574360_3714583351464310122_n.png?raw=true)
+![Uml Scheme](https://github.com/BraianBerg/Recipe-app-java-Robotex/blob/master/img/283784156_1774248399574360_3714583351464310122_n.png?raw=true)
