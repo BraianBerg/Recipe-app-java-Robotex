@@ -4,20 +4,20 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="@color/appbackground"
-    app:cardElevation="8dp"
-    android:layout_margin="8dp"
+    app:cardElevation="@dimen/margin8dp"
+    android:layout_margin="@dimen/margin8dp"
     android:id="@+id/similar_recipe_holder">
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_margin="4dp"
-        android:layout_width="150dp"
+        android:layout_margin="@dimen/margin4dp"
+        android:layout_width="@dimen/size150dp"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/textView_similar_title"
-            android:text="Similar Name"
+            android:text="@string/similar_name"
             android:textStyle="bold"
-            android:padding="8dp"
+            android:padding="@dimen/margin8dp"
             android:textColor="@color/apptextcolor"
             android:textAlignment="center"
             android:singleLine="true"
@@ -28,14 +28,15 @@
             android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/imageView_similar"
+            android:contentDescription="@string/similar_name"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="60dp"/>
+            android:layout_height="@dimen/margin60dp"/>
         <TextView
             android:id="@+id/textView_similar_serving"
-            android:text="Similar Name"
+            android:text="@string/similar_name"
             android:textStyle="italic"
-            android:padding="8dp"
+            android:padding="@dimen/margin8dp"
             android:textColor="@color/apptextcolor"
             android:textAlignment="center"
             android:singleLine="true"

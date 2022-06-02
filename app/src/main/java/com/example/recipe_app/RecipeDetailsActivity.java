@@ -17,9 +17,7 @@ import com.example.recipe_app.Adapters.SimilarRecipeAdapter;
 import com.example.recipe_app.Database.Callbacks.FirestoreAnalyzedInstructionsCallback;
 import com.example.recipe_app.Database.Callbacks.FirestoreCallBackDetails;
 import com.example.recipe_app.Database.DbMethodsDetails;
-import com.example.recipe_app.Listeners.InstructionsListener;
 import com.example.recipe_app.Listeners.RecipeClickListener;
-import com.example.recipe_app.Listeners.RecipeDetailsListener;
 import com.example.recipe_app.Listeners.SimilarRecipesListener;
 import com.example.recipe_app.Models.InstructionsResponse;
 import com.example.recipe_app.Models.RecipeDetailsResponce;
@@ -29,7 +27,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
-    private DbMethodsDetails dbMethodsDetails = new DbMethodsDetails();
+    private final DbMethodsDetails dbMethodsDetails = new DbMethodsDetails();
     int id;
     TextView textView_meal_name, textView_meal_source, textView_meal_summary;
     ImageView imageView_meal_image;
@@ -73,19 +71,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
     }
 
-    private final RecipeDetailsListener recipeDetailsListener = new RecipeDetailsListener() {
-        @Override
-        public void didFetch(RecipeDetailsResponce response, String message) {
-            RecipeDetailsSet(response);
-        }
-
-        @Override
-        public void didError(String message) {
-            Toast.makeText(RecipeDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    private FirestoreAnalyzedInstructionsCallback analyzedInstructionsCallback = new FirestoreAnalyzedInstructionsCallback() {
+    private final FirestoreAnalyzedInstructionsCallback analyzedInstructionsCallback = new FirestoreAnalyzedInstructionsCallback() {
         @Override
         public void GotAnalyzedInstructions(List<InstructionsResponse> response){
             GotInstructions(response);
@@ -96,7 +82,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         }
     };
-    private FirestoreCallBackDetails firestoreCallBackDetails = new FirestoreCallBackDetails() {
+    private final FirestoreCallBackDetails firestoreCallBackDetails = new FirestoreCallBackDetails() {
         @Override
         public void GotDetails(RecipeDetailsResponce detailsResponse) {
             RecipeDetailsSet(detailsResponse);
@@ -135,26 +121,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
     };
 
-    private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
-        @Override
-        public void onRecipeClicked(String id) {
-        // Toast.makeText(RecipeDetailsActivity.this, id, Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(RecipeDetailsActivity.this, RecipeDetailsActivity.class)
-        .putExtra("id", id).putExtra("boolSimilar", "true"));
-
-        }
-    };
-    private final InstructionsListener instructionsListener = new InstructionsListener() {
-        @Override
-        public void didFetch(List<InstructionsResponse> response, String message) {
-            GotInstructions(response);
-        }
-
-        @Override
-        public void didError(String message) {
-
-        }
-    };
+    private final RecipeClickListener recipeClickListener = id -> startActivity(new Intent(RecipeDetailsActivity.this, RecipeDetailsActivity.class)
+    .putExtra("id", id).putExtra("boolSimilar", "true"));
 
     private void GotInstructions(List<InstructionsResponse> response) {
         recycler_meal_instructions.setHasFixedSize(true);

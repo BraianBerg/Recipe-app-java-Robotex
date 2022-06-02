@@ -24,72 +24,73 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/textView_meal_name"
-                android:text="Recipe name"
-                android:textSize="20sp"
+                android:text="@string/recipe_name"
+                android:textSize="@dimen/testSize20dp"
                 android:gravity="center"
                 android:textColor="@color/apptextcolor"
-                android:padding="8dp"
+                android:padding="@dimen/margin8dp"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/textView_meal_source"
-                android:text="Source"
+                android:text="@string/source"
                 android:gravity="center"
                 android:textStyle="italic"
                 android:textColor="@color/apptextcolor"
-                android:textSize="14sp"
-                android:padding="8dp"
+                android:textSize="@dimen/testSize14sp"
+                android:padding="@dimen/margin8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:id="@+id/imageView_meal_image"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/margin8dp"
+                android:contentDescription="@string/meal_image"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"/>
+                android:layout_height="@dimen/height250dp"/>
             <TextView
                 android:id="@+id/textView_meal_summary"
-                android:text="Summary"
-                android:textSize="14sp"
+                android:text="@string/summary"
+                android:textSize="@dimen/testSize14sp"
                 android:textColor="@color/apptextcolor"
                 android:maxLines="5"
                 android:textStyle="normal"
-                android:padding="8dp"
-                android:layout_margin="8dp"
+                android:padding="@dimen/margin8dp"
+                android:layout_margin="@dimen/margin8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_meal_instructions"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/margin8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:text="Similar Recipes"
+                android:text="@string/similar_recipes"
                 android:textStyle="bold"
                 android:textColor="@color/apptextcolor"
-                android:textSize="18sp"
-                android:padding="8dp"
+                android:textSize="@dimen/testSize18sp"
+                android:padding="@dimen/margin8dp"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_meal_similar"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/margin8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:text="Ingredients"
+                android:text="@string/ingredients"
                 android:textStyle="bold"
                 android:textColor="@color/apptextcolor"
-                android:textSize="18sp"
-                android:padding="8dp"
+                android:textSize="@dimen/testSize18sp"
+                android:padding="@dimen/margin8dp"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_meal_ingredients"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/margin8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

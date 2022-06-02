@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text24sp">24sp</dimen>
+    <dimen name="margin4dp">4dp</dimen>
+    <dimen name="margin8dp">8dp</dimen>
+    <dimen name="margin40dp">40dp</dimen>
+    <dimen name="textSize24sp">24sp</dimen>
+    <dimen name="margin60dp">60dp</dimen>
+    <dimen name="margin52dp">52dp</dimen>
+    <dimen name="margin56dp">56dp</dimen>
+    <dimen name="margin120dp">120dp</dimen>
+    <dimen name="textSize60sp">60sp</dimen>
+    <dimen name="testSize18sp">18sp</dimen>
+    <dimen name="testSize14sp">14sp</dimen>
+    <dimen name="height250dp">250dp</dimen>
+    <dimen name="testSize20dp">20sp</dimen>
+    <dimen name="margin44dp">44dp</dimen>
+    <dimen name="margin172dp">172dp</dimen>
+    <dimen name="margin20dp">20dp</dimen>
+    <dimen name="margin116dp">116dp</dimen>
+    <dimen name="size100dp">100dp</dimen>
+    <dimen name="textSize22sp">22sp</dimen>
+    <dimen name="size200dp">200dp</dimen>
+    <dimen name="textSize16sp">16sp</dimen>
+    <dimen name="size50dp">50dp</dimen>
+    <dimen name="size80dp">80dp</dimen>
+    <dimen name="size150dp">150dp</dimen>
+</resources>

@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recipe_app.Models.ExtendedIngredient;
-import com.example.recipe_app.R;;
+import com.example.recipe_app.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

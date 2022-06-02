@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:text="Dessert"
     android:textColor="@color/apptextcolor"
-    android:textSize="18sp"
-    android:padding="8dp"
+    android:textSize="@dimen/testSize18sp"
+    android:padding="@dimen/margin8dp"
     android:background="@color/appbackground">
 
 </TextView>

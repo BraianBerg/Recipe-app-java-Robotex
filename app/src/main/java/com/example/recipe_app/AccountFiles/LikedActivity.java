@@ -8,24 +8,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.recipe_app.Adapters.RandomRecipeAdapter;
 import com.example.recipe_app.Database.Callbacks.FirestoreCallback;
 import com.example.recipe_app.Listeners.LikeListener;
 import com.example.recipe_app.Listeners.RecipeClickListener;
-import com.example.recipe_app.MainActivity;
 import com.example.recipe_app.Models.RandomRecipeApiResponse;
 import com.example.recipe_app.Models.Recipe;
 import com.example.recipe_app.R;
 import com.example.recipe_app.RecipeDetailsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LikedActivity extends AppCompatActivity {
     private static final String TAG = "LikedActivity";
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
-    private LikedDbMethods dbMethods = new LikedDbMethods();
+    private final LikedDbMethods dbMethods = new LikedDbMethods();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

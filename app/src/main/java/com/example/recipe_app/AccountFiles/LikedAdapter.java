@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import com.example.recipe_app.Models.Recipe;
 import com.example.recipe_app.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 public class LikedAdapter extends RecyclerView.Adapter<LikeViewHolder>{
@@ -45,9 +45,9 @@ public class LikedAdapter extends RecyclerView.Adapter<LikeViewHolder>{
         public void onBindViewHolder(@NonNull LikeViewHolder holder, int position) {
             holder.textView_title.setText(list.get(position).title);
             holder.textView_title.setSelected(true);
-            holder.textView_Likes.setText(list.get(position).aggregateLikes+" Likes");
-            holder.textView_Servings.setText(list.get(position).servings+" Servings");
-            holder.textView_time.setText(list.get(position).readyInMinutes+" Minutes");
+            holder.textView_Likes.setText(MessageFormat.format("{0} Likes", list.get(position).aggregateLikes));
+            holder.textView_Servings.setText(MessageFormat.format("{0} Servings", list.get(position).servings));
+            holder.textView_time.setText(MessageFormat.format("{0} Minutes", list.get(position).readyInMinutes));
             Picasso.get().load(list.get(position).image).into(holder.imageView_food);
             holder.likeButton.setOnClickListener(view -> {
                 holder.starImg.setImageResource(R.drawable.ic_baseline_star_outline_24);

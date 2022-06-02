@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.recipe_app.Database.Callbacks.FirestoreAnalyzedInstructionsCallback;
@@ -18,13 +17,10 @@ import com.example.recipe_app.Models.InstructionsResponse;
 import com.example.recipe_app.Models.Recipe;
 import com.example.recipe_app.Models.RecipeDetailsResponce;
 import com.example.recipe_app.RequestManager;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jsoup.Jsoup;
 
@@ -86,7 +82,7 @@ public class DbMethodsDetails {
                     // kutsu kontroll
                     Log.d(TAG, "didFetch: kontroll passed");
                     CheckIfResExistsAndWrite checkIfResExistsAndWrite = new CheckIfResExistsAndWrite(id, response, context);
-                    checkIfResExistsAndWrite.run();
+                    checkIfResExistsAndWrite.start();
                 }
 
             }
@@ -104,10 +100,10 @@ public class DbMethodsDetails {
     }
     private static class CheckIfResExistsAndWrite extends Thread{
         private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        private CollectionReference recipes = db.collection("recipes");
-        private int id;
-        private RecipeDetailsResponce responce;
-        private Context context;
+        private final CollectionReference recipes = db.collection("recipes");
+        private final int id;
+        private final RecipeDetailsResponce responce;
+        private final Context context;
         Handler handler = new Handler(Looper.getMainLooper());
 
         public CheckIfResExistsAndWrite (int id, RecipeDetailsResponce responce, Context context){
@@ -119,30 +115,19 @@ public class DbMethodsDetails {
         @Override
         public void run() {
             CheckIfResExists(responce, id);
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context, "Background thread is saving data", Toast.LENGTH_SHORT).show();
-                }
-            });
+            handler.post(() -> Toast.makeText(context, "Background thread is saving data", Toast.LENGTH_SHORT).show());
         }
 
         private void CheckIfResExists(RecipeDetailsResponce responce, int id){
-            recipes.whereEqualTo("id", id).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    if (queryDocumentSnapshots.isEmpty()){
-                        Log.d(TAG, "onSuccess: andmebaasi kirjutamie hakkab");
-                        // kirjuta andmebaasi
-                        WriteToDb(responce);
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "onFailure: db chekc failed");
+            recipes.whereEqualTo("id", id).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                if (queryDocumentSnapshots.isEmpty()){
+                    Log.d(TAG, "onSuccess: andmebaasi kirjutamie hakkab");
+                    // kirjuta andmebaasi
                     WriteToDb(responce);
                 }
+            }).addOnFailureListener(e -> {
+                Log.d(TAG, "onFailure: db chekc failed");
+                WriteToDb(responce);
             });
         }
 
@@ -197,7 +182,7 @@ public class DbMethodsDetails {
         private final FirebaseFirestore db = FirebaseFirestore.getInstance();
         private final CollectionReference details = db.collection("details");
         private final RecipeDetailsResponce detailsModel;
-        private Context context;
+        private final Context context;
         Handler handler = new Handler(Looper.getMainLooper());
 
 
@@ -210,12 +195,7 @@ public class DbMethodsDetails {
         public void run() {
             //super.run();
             Log.d(TAG, "run: second thread write db");
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context,"Background thread is saving details to Db ", Toast.LENGTH_SHORT).show();
-                }
-            });
+            handler.post(() -> Toast.makeText(context,"Background thread is saving details to Db ", Toast.LENGTH_SHORT).show());
             SaveDetails(detailsModel);
         }
         private void SaveDetails(RecipeDetailsResponce detailsModel){
@@ -248,7 +228,7 @@ public class DbMethodsDetails {
         private final CollectionReference details = db.collection("details");
         private final DocumentSnapshot snapshot;
         private final List<InstructionsResponse> list;
-        private Context context;
+        private final Context context;
         Handler handler = new Handler(Looper.getMainLooper());
 
         public ChangeDocumentsInstructions(DocumentSnapshot snapshot,List<InstructionsResponse> list, Context context){
@@ -260,12 +240,7 @@ public class DbMethodsDetails {
         public void run() {
             ChangeDocumentInstructions(snapshot, list);
 
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context, "Background thread is changing documents", Toast.LENGTH_SHORT ).show();
-                }
-            });
+            handler.post(() -> Toast.makeText(context, "Background thread is changing documents", Toast.LENGTH_SHORT ).show());
         }
         private void ChangeDocumentInstructions(DocumentSnapshot snapshot, List<InstructionsResponse> list){
             DocumentReference docRef = details.document(snapshot.getId());

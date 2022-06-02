@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="@color/appsmallboxes"
-    android:elevation="8dp"
-    android:layout_margin="4dp">
+    android:elevation="@dimen/margin8dp"
+    android:layout_margin="@dimen/margin4dp">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -14,20 +14,21 @@
         <ImageView
             android:id="@+id/imageView_instructions_step_items"
             android:scaleType="fitCenter"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:contentDescription="@string/instructions_picture"
+            android:layout_width="@dimen/size100dp"
+            android:layout_height="@dimen/size100dp" />
 
         <TextView
             android:id="@+id/textView_instructions_step_item"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
-            android:padding="4dp"
+            android:padding="@dimen/margin4dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text="Item"
+            android:text="@string/item"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="@dimen/testSize18sp"
             android:textStyle="normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

@@ -51,10 +51,8 @@ public class PeriodicWorkerClass extends Worker {
                 Log.d(TAG, "DeleteRecipes: sna[shot" + snapshots.size());
                 for (int i  = 0; i < snapshots.size(); i++ ){
                     if (i == 0){
-                        Log.d(TAG, "DeleteRecipes: " + i);
 
                         Recipe res = snapshots.get(i).toObject(Recipe.class);
-                        Log.d(TAG, "DeleteRecipes: id " + res.id);
                         id[0] = res.id;
                     }
                     else {

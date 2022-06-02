@@ -2,29 +2,23 @@ package com.example.recipe_app.AccountFiles;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 
 import com.example.recipe_app.Database.Callbacks.FirestoreCallback;
 import com.example.recipe_app.Models.RandomRecipeApiResponse;
 import com.example.recipe_app.Models.Recipe;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.CollationElementIterator;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class LikedDbMethods {
     private static final String TAG = "LikedDbMethods";
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private FirebaseUser user = auth.getCurrentUser();
-    private CollectionReference userCollection = db.collection("user");
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseUser user = auth.getCurrentUser();
+    private final CollectionReference userCollection = db.collection("user");
 
     public void AddResToLiked(Recipe recipeModelToAdd){
 

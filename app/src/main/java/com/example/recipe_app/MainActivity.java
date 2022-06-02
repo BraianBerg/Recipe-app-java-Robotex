@@ -30,10 +30,8 @@ import com.example.recipe_app.Adapters.RandomRecipeAdapter;
 import com.example.recipe_app.Database.Callbacks.FirestoreCallback;
 import com.example.recipe_app.Database.DbMethods;
 import com.example.recipe_app.Listeners.LikeListener;
-import com.example.recipe_app.Listeners.RandomRecipeResponseListener;
 import com.example.recipe_app.Listeners.RecipeClickListener;
 import com.example.recipe_app.Models.RandomRecipeApiResponse;
-import com.example.recipe_app.Models.Recipe;
 import com.example.recipe_app.Worker.PeriodicWorkerClass;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,11 +40,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.grpc.ManagedChannelProvider;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private DbMethods dbMethods = new DbMethods();
+    private final DbMethods dbMethods = new DbMethods();
     private FirebaseAuth firebaseAuth;
     ImageButton imgButton;
     ImageButton likedList;
