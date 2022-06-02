@@ -29,29 +29,29 @@
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/SettingsButton"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_baseline_more_vert_24"
                 android:layout_toEndOf="@id/appName"
                 android:backgroundTint="@color/appbackground"
-                />
+                android:src="@drawable/ic_baseline_more_vert_24" />
+
             <ImageButton
                 android:id="@+id/likedList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_star_24"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/SettingsButton"
                 android:backgroundTint="@color/appbackground"
-                android:layout_toEndOf="@id/SettingsButton"/>
+                android:src="@drawable/ic_baseline_star_24" />
+
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/logOut"
-                android:src="@drawable/ic_baseline_account_circle_24"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:backgroundTint="@color/appbackground"
                 android:layout_toEndOf="@+id/likedList"
-                />
+                android:backgroundTint="@color/appbackground"
+                android:src="@drawable/ic_baseline_account_circle_24" />
 
             <Spinner
                 android:id="@+id/spinner_tags"
