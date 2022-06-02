@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Robotex</string>
     <string name="api_key">9fca03d34a934e0fb335d22211eb007b</string>
+    <string name="logOutButton">logOutButtonPref</string>
 
     <string-array name="tags">
         <item>main course</item>

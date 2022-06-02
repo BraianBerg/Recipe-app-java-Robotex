@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipeapp">
         <activity
+            android:name=".AccountFiles.LikedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccountFiles.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccountFiles.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
@@ -24,10 +33,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecipeDetailsActivity"
+        <activity
+            android:name=".RecipeDetailsActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            android:label="Recipe Details"/>
+            android:label="Recipe Details"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

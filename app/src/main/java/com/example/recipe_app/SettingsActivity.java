@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
@@ -31,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         prefs = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
         setContentView(R.layout.settings_activity);
         if (savedInstanceState == null) {

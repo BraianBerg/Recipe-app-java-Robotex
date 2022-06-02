@@ -23,22 +23,34 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.recipe_app.AccountFiles.LikedActivity;
+import com.example.recipe_app.AccountFiles.LikedDbMethods;
+import com.example.recipe_app.AccountFiles.LoginActivity;
 import com.example.recipe_app.Adapters.RandomRecipeAdapter;
 import com.example.recipe_app.Database.Callbacks.FirestoreCallback;
 import com.example.recipe_app.Database.DbMethods;
+import com.example.recipe_app.Listeners.LikeListener;
 import com.example.recipe_app.Listeners.RandomRecipeResponseListener;
 import com.example.recipe_app.Listeners.RecipeClickListener;
 import com.example.recipe_app.Models.RandomRecipeApiResponse;
+import com.example.recipe_app.Models.Recipe;
 import com.example.recipe_app.Worker.PeriodicWorkerClass;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.grpc.ManagedChannelProvider;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private DbMethods dbMethods = new DbMethods();
+    private FirebaseAuth firebaseAuth;
     ImageButton imgButton;
+    ImageButton likedList;
+    ImageButton LogOut;
     ProgressDialog dialog;
     RequestManager manager;
     RandomRecipeAdapter randomRecipeAdapter;
@@ -46,6 +58,16 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner;
     List<String> tags = new ArrayList<>();
     SearchView searchView;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user == null){
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
         //set theme
         SetTheme();
-
-
+        likedList = findViewById(R.id.likedList);
+        LogOut = findViewById(R.id.logOut);
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...");
-
+        firebaseAuth = FirebaseAuth.getInstance();
         searchView = findViewById(R.id.searchView_home);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -96,7 +118,10 @@ public class MainActivity extends AppCompatActivity {
         manager = new RequestManager(this);
 
         Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        Intent likedIntent = new Intent(MainActivity.this, LikedActivity.class);
         imgButton.setOnClickListener(view -> startActivity(settingsIntent));
+        likedList.setOnClickListener(view -> startActivity(likedIntent));
+        LogOut.setOnClickListener(view -> {firebaseAuth.signOut(); startActivity(new Intent(MainActivity.this, LoginActivity.class));});
     }
 
     private void SetTheme() {
@@ -120,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         PeriodicWorkRequest periodicWorkRequest =
                 new PeriodicWorkRequest.Builder(PeriodicWorkerClass.class, delay, TimeUnit.DAYS)
                         .setConstraints(constraints)
-
                         .build();
 
         WorkManager workManager =  WorkManager.getInstance(this);
@@ -152,9 +176,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_random);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
-        randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes, recipeClickListener);
+        randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes, recipeClickListener,likeListener );
         recyclerView.setAdapter(randomRecipeAdapter);
     }
+
+
+    private final LikeListener likeListener = recipeModel -> {
+        LikedDbMethods likedDbMethods = new LikedDbMethods();
+        likedDbMethods.AddResToLiked(recipeModel);
+     Toast.makeText(MainActivity.this, "Liked pressed ", Toast.LENGTH_SHORT ).show();
+    };
 
     private final AdapterView.OnItemSelectedListener spinnerSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
