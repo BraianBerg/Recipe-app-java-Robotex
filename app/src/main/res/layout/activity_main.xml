@@ -35,6 +35,23 @@
                 android:layout_toEndOf="@id/appName"
                 android:backgroundTint="@color/appbackground"
                 />
+            <ImageButton
+                android:id="@+id/likedList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_star_24"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/appbackground"
+                android:layout_toEndOf="@id/SettingsButton"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/logOut"
+                android:src="@drawable/ic_baseline_account_circle_24"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/appbackground"
+                android:layout_toEndOf="@+id/likedList"
+                />
 
             <Spinner
                 android:id="@+id/spinner_tags"

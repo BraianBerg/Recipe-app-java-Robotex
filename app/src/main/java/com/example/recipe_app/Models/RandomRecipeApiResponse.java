@@ -8,4 +8,12 @@ public class RandomRecipeApiResponse {
     public RandomRecipeApiResponse() {
         // needed for db
     }
+
+    public ArrayList<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(ArrayList<Recipe> recipes) {
+        this.recipes = recipes;
+    }
 }
